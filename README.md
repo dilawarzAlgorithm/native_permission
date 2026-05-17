@@ -1,17 +1,3 @@
-# native_permission
+# Native Permission
 
-A new Flutter project.
-
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+A native services sandbox app designed to isolate and master low-level platform features in Flutter. Built with a strict separation of user interface and hardware communication, the application implements native camera streams, background worker lifecycles with runtime toggle controls, GPS tracking, and Bluetooth device scanning—all reactively coordinated using Riverpod state management.
