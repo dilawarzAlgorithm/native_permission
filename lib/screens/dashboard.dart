@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:native_permission/widgets/bluetooth.dart';
+import 'package:native_permission/widgets/camera.dart';
+import 'package:native_permission/widgets/gps.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
@@ -30,11 +33,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           NavigationDestination(icon: Icon(Icons.gps_fixed), label: 'GPS'),
         ],
       ),
-      body: <Widget>[
-        Text('Camera'),
-        Text('Bluetooth'),
-        Text('GPS'),
-      ][_selectedInd],
+      body: <Widget>[Camera(), Bluetooth(), Gps()][_selectedInd],
     );
   }
 }
