@@ -5,9 +5,16 @@ import '../domain/camera_state.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class CameraControllerNotifier extends AsyncNotifier<CustomCameraState> {
+  int _selectedCameraIndex = 0;
+  CameraController? _currentController;
+
   @override
   FutureOr<CustomCameraState> build() async {
     final status = await Permission.camera.status;
+
+    ref.onDispose(() {
+      _currentController?.dispose();
+    });
 
     if (status.isGranted) {
       return _initializeHardware();
@@ -33,16 +40,40 @@ class CameraControllerNotifier extends AsyncNotifier<CustomCameraState> {
     }
   }
 
+  Future<void> toggleCamera() async {
+    final currentState = state.value;
+    if (currentState == null ||
+        !currentState.isPermissionGranted ||
+        currentState.availableCameras.isEmpty) {
+      return;
+    }
+
+    _selectedCameraIndex =
+        (_selectedCameraIndex + 1) % currentState.availableCameras.length;
+
+    state = const AsyncLoading();
+
+    state = await AsyncValue.guard(() async {
+      return _initializeHardware();
+    });
+  }
+
   Future<CustomCameraState> _initializeHardware() async {
     final cameras = await availableCameras();
     if (cameras.isEmpty) {
       throw Exception('No camera hardware found on this device.');
     }
 
-    final primaryCamera = cameras.first;
+    await _currentController?.dispose();
+
+    if (_selectedCameraIndex >= cameras.length) {
+      _selectedCameraIndex = 0;
+    }
+
+    final targetCamera = cameras[_selectedCameraIndex];
 
     final controller = CameraController(
-      primaryCamera,
+      targetCamera,
       ResolutionPreset.medium,
       enableAudio: false,
     );

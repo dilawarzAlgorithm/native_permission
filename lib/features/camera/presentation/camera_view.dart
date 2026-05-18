@@ -22,27 +22,6 @@ class Camera extends ConsumerWidget {
         ),
       ),
       data: (cameraState) {
-        if (!cameraState.isPermissionGranted) {
-          return Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text(
-                  'Camera permission is required to use this feature.',
-                ),
-                const SizedBox(height: 16),
-                ElevatedButton(
-                  onPressed: () {
-                    ref
-                        .read(cameraProvider.notifier)
-                        .requestPermissionOrOpenSettings();
-                  },
-                  child: const Text('Grant Permission / Open Settings'),
-                ),
-              ],
-            ),
-          );
-        }
         return Stack(
           children: [
             Positioned.fill(child: CameraPreview(cameraState.controller!)),
@@ -64,6 +43,17 @@ class Camera extends ConsumerWidget {
                   },
                   child: const Icon(Icons.camera_alt),
                 ),
+              ),
+            ),
+            Positioned(
+              bottom: 30,
+              left: 30,
+              child: FloatingActionButton(
+                heroTag: 'toggleBtn',
+                onPressed: () {
+                  ref.read(cameraProvider.notifier).toggleCamera();
+                },
+                child: const Icon(Icons.loop),
               ),
             ),
           ],
