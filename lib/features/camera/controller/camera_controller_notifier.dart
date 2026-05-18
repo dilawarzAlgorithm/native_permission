@@ -1,10 +1,12 @@
 import 'dart:async';
 import 'package:camera/camera.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../domain/camera_state.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class CameraControllerNotifier extends AsyncNotifier<CustomCameraState> {
+  static const _cameraIndexKey = 'selected_camera_index';
   int _selectedCameraIndex = 0;
   CameraController? _currentController;
 
@@ -17,6 +19,8 @@ class CameraControllerNotifier extends AsyncNotifier<CustomCameraState> {
     });
 
     if (status.isGranted) {
+      final prefs = await SharedPreferences.getInstance();
+      _selectedCameraIndex = prefs.getInt(_cameraIndexKey) ?? 0;
       return _initializeHardware();
     }
 
@@ -51,6 +55,9 @@ class CameraControllerNotifier extends AsyncNotifier<CustomCameraState> {
     _selectedCameraIndex =
         (_selectedCameraIndex + 1) % currentState.availableCameras.length;
 
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setInt(_cameraIndexKey, _selectedCameraIndex);
+
     state = const AsyncLoading();
 
     state = await AsyncValue.guard(() async {
@@ -68,6 +75,8 @@ class CameraControllerNotifier extends AsyncNotifier<CustomCameraState> {
 
     if (_selectedCameraIndex >= cameras.length) {
       _selectedCameraIndex = 0;
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setInt(_cameraIndexKey, 0);
     }
 
     final targetCamera = cameras[_selectedCameraIndex];
