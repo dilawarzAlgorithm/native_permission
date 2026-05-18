@@ -2,6 +2,7 @@ import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:native_permission/features/camera/controller/camera_controller_notifier.dart';
+import 'package:native_permission/features/camera/presentation/display_picture.dart';
 
 class Camera extends ConsumerWidget {
   const Camera({super.key});
@@ -32,13 +33,33 @@ class Camera extends ConsumerWidget {
               child: Center(
                 child: FloatingActionButton(
                   onPressed: () async {
-                    final file = await ref
-                        .read(cameraProvider.notifier)
-                        .capturePhoto();
-                    if (file != null && context.mounted) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Saved to: ${file.path}')),
-                      );
+                    try {
+                      final file = await ref
+                          .read(cameraProvider.notifier)
+                          .capturePhoto();
+
+                      if (file != null && context.mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('Saved to Gallery!')),
+                        );
+                        await Navigator.of(context).push(
+                          MaterialPageRoute<void>(
+                            builder: (context) =>
+                                DisplayPicture(imagePath: file.path),
+                          ),
+                        );
+                      }
+                    } catch (error) {
+                      if (context.mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            backgroundColor: Colors.red,
+                            content: Text(
+                              'Failed to save: ${error.toString()}',
+                            ),
+                          ),
+                        );
+                      }
                     }
                   },
                   child: const Icon(Icons.camera_alt),

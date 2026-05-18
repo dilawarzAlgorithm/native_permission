@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:camera/camera.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:gal/gal.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../domain/camera_state.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -107,7 +108,19 @@ class CameraControllerNotifier extends AsyncNotifier<CustomCameraState> {
         !currentState.controller!.value.isInitialized) {
       return null;
     }
-    return await currentState.controller!.takePicture();
+    try {
+      final XFile file = await currentState.controller!.takePicture();
+
+      final hasAccess = await Gal.hasAccess(toAlbum: true);
+      if (!hasAccess) {
+        await Gal.requestAccess(toAlbum: true);
+      }
+
+      await Gal.putImage(file.path);
+      return file;
+    } catch (e) {
+      rethrow;
+    }
   }
 }
 
