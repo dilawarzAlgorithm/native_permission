@@ -15,7 +15,6 @@ class GpsControllerNotifier extends AsyncNotifier<CustomGpsState> {
       _serviceStatusSubscription?.cancel();
     });
 
-    // Listen to device hardware location toggle switches
     _serviceStatusSubscription = Geolocator.getServiceStatusStream().listen((
       status,
     ) {
@@ -35,7 +34,6 @@ class GpsControllerNotifier extends AsyncNotifier<CustomGpsState> {
     if (permission == LocationPermission.whileInUse ||
         permission == LocationPermission.always) {
       if (isServiceEnabled) {
-        // Automatically fetch initial coordinate position if permissions exist
         final position = await Geolocator.getCurrentPosition(
           locationSettings: const LocationSettings(
             accuracy: LocationAccuracy.high,
@@ -125,8 +123,7 @@ class GpsControllerNotifier extends AsyncNotifier<CustomGpsState> {
           Geolocator.getPositionStream(
             locationSettings: const LocationSettings(
               accuracy: LocationAccuracy.high,
-              distanceFilter:
-                  5, // Triggers notification update when user moves 5 meters
+              distanceFilter: 5,
             ),
           ).listen(
             (position) {

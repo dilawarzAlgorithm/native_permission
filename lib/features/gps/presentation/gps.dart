@@ -1,4 +1,3 @@
-// lib/features/gps/presentation/gps.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geolocator/geolocator.dart';
@@ -23,7 +22,6 @@ class Gps extends ConsumerWidget {
         ),
       ),
       data: (gpsState) {
-        // Handle Unauthorized Permissions
         if (gpsState.permissionStatus == LocationPermission.denied ||
             gpsState.permissionStatus == LocationPermission.deniedForever ||
             gpsState.permissionStatus == LocationPermission.unableToDetermine) {
@@ -59,7 +57,6 @@ class Gps extends ConsumerWidget {
           );
         }
 
-        // Handle System OS Location Toggle off
         if (!gpsState.isLocationServiceEnabled) {
           return Center(
             child: Padding(
@@ -73,7 +70,6 @@ class Gps extends ConsumerWidget {
           );
         }
 
-        // Active Functional Panel View Template
         final position = gpsState.currentPosition;
 
         return Padding(

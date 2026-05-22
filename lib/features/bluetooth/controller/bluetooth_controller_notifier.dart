@@ -26,7 +26,6 @@ class BluetoothControllerNotifier extends AsyncNotifier<CustomBluetoothState> {
       }
     });
 
-    // Proactively check permission status on initialization
     final hasPermissions = await _checkCurrentPermissions();
     if (hasPermissions) {
       return CustomBluetoothState(bleStatus: _ble.status);
@@ -44,7 +43,6 @@ class BluetoothControllerNotifier extends AsyncNotifier<CustomBluetoothState> {
   }
 
   Future<void> requestPermissionsAndStartScan() async {
-    // Request structural OS permissions matching your architecture
     Map<Permission, PermissionStatus> statuses = await [
       Permission.bluetoothScan,
       Permission.bluetoothConnect,
@@ -69,16 +67,12 @@ class BluetoothControllerNotifier extends AsyncNotifier<CustomBluetoothState> {
     _scanSubscription?.cancel();
 
     _scanSubscription = _ble
-        .scanForDevices(
-          withServices: [], // Add targeted service UUIDs here if needed
-          scanMode: ScanMode.lowLatency,
-        )
+        .scanForDevices(withServices: [], scanMode: ScanMode.lowLatency)
         .listen(
           (device) {
             final currentVal = state.value;
             if (currentVal == null) return;
 
-            // Prevent duplicate rendering items in UI array lists
             final exists = currentVal.discoveredDevices.any(
               (d) => d.id == device.id,
             );
@@ -158,7 +152,6 @@ class BluetoothControllerNotifier extends AsyncNotifier<CustomBluetoothState> {
     }
   }
 
-  // Interactivity Actions Example
   Future<void> readValue(String serviceUuid, String characteristicUuid) async {
     final currentState = state.value;
     if (currentState == null || currentState.connectedDeviceId == null) return;

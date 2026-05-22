@@ -22,7 +22,6 @@ class Bluetooth extends ConsumerWidget {
         ),
       ),
       data: (bleState) {
-        // Handle unauthorized status with an interactive action button
         if (bleState.bleStatus == BleStatus.unauthorized) {
           return Center(
             child: Padding(
@@ -56,7 +55,6 @@ class Bluetooth extends ConsumerWidget {
           );
         }
 
-        // Handle physical hardware power off switch cases
         if (bleState.bleStatus != BleStatus.ready) {
           return Center(
             child: Padding(
@@ -70,7 +68,6 @@ class Bluetooth extends ConsumerWidget {
           );
         }
 
-        // Handle Active Connection Interface Layout
         if (bleState.connectionState == DeviceConnectionState.connected ||
             bleState.connectionState == DeviceConnectionState.connecting) {
           return Padding(
@@ -126,15 +123,11 @@ class Bluetooth extends ConsumerWidget {
           );
         }
 
-        // Layout containing the scanning item lists with floating actions attached cleanly inside a Stack
         return Stack(
           children: [
             Positioned.fill(
               child: ListView.builder(
-                padding: const EdgeInsets.only(
-                  bottom: 90,
-                  top: 8,
-                ), // Padding so FAB doesn't clip items
+                padding: const EdgeInsets.only(bottom: 90, top: 8),
                 itemCount: bleState.discoveredDevices.length,
                 itemBuilder: (context, index) {
                   final device = bleState.discoveredDevices[index];

@@ -1,5 +1,3 @@
-// lib/features/background_task/controller/background_controller_notifier.dart
-
 import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -32,15 +30,11 @@ class BackgroundControllerNotifier extends AsyncNotifier<BackgroundState> {
     final willSchedule = !currentState.isTaskScheduled;
 
     if (willSchedule) {
-      // 15 minutes is the minimum interval allowed by Android/iOS
       await Workmanager().registerPeriodicTask(
         "1", // unique task ID
         backgroundTaskKey,
         frequency: const Duration(minutes: 15),
-        constraints: Constraints(
-          networkType:
-              NetworkType.connected, // Only run if internet is available
-        ),
+        constraints: Constraints(networkType: NetworkType.connected),
       );
     } else {
       await Workmanager().cancelAll();
@@ -52,8 +46,6 @@ class BackgroundControllerNotifier extends AsyncNotifier<BackgroundState> {
     );
   }
 
-  // Since the background task runs in a separate isolate, it cannot trigger
-  // Riverpod to rebuild. We must manually check for updates when the user opens this view.
   Future<void> refreshTimestamp() async {
     final currentState = state.value;
     if (currentState == null) return;
