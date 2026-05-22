@@ -10,7 +10,11 @@ class DisplayPicture extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Display the Picture')),
-      body: Image.file(File(imagePath)),
+      body: Image.file(
+        File(imagePath),
+        height: MediaQuery.of(context).size.height,
+        fit: BoxFit.cover,
+      ),
     );
   }
 }
