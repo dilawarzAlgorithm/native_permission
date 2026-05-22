@@ -80,5 +80,15 @@
 	<string>This application requires active access to your device GPS radio components to compute precision location coordinates.</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>This application requires active access to your device GPS radio components to calculate live tracking coordinate telemetry metrics.</string>
+	<key>UIBackgroundModes</key>
+    <array>
+        <string>processing</string>
+        <string>fetch</string>
+    </array>
+
+    <key>BGTaskSchedulerPermittedIdentifiers</key>
+    <array>
+        <string>com.native_permission.bg_sync</string>
+    </array>
 </dict>
 </plist>

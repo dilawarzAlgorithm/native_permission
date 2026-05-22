@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:native_permission/features/background_task/presentation/background_view.dart';
 import 'package:native_permission/features/camera/presentation/camera_view.dart';
 import 'package:native_permission/features/bluetooth/presentation/bluetooth.dart';
 import 'package:native_permission/features/gps/presentation/gps.dart';
@@ -31,9 +32,18 @@ class _DashboardScreenState extends State<DashboardScreen> {
             label: 'Bluetooth',
           ),
           NavigationDestination(icon: Icon(Icons.gps_fixed), label: 'GPS'),
+          NavigationDestination(
+            icon: Icon(Icons.settings_applications),
+            label: 'Background',
+          ),
         ],
       ),
-      body: <Widget>[Camera(), Bluetooth(), Gps()][_selectedInd],
+      body: <Widget>[
+        Camera(),
+        Bluetooth(),
+        Gps(),
+        BackgroundView(),
+      ][_selectedInd],
     );
   }
 }
