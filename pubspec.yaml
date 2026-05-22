@@ -43,6 +43,7 @@ dependencies:
   shared_preferences: ^2.5.5
   gal: ^2.3.2
   flutter_reactive_ble: ^5.4.2
+  geolocator: ^14.0.2
 
 dev_dependencies:
   flutter_test:

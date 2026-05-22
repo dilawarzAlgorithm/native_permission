@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:native_permission/features/camera/presentation/camera_view.dart';
 import 'package:native_permission/features/bluetooth/presentation/bluetooth.dart';
-import 'package:native_permission/widgets/gps.dart';
+import 'package:native_permission/features/gps/presentation/gps.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});

@@ -76,5 +76,9 @@
 	<string>The app uses bluetooth to find, connect and transfer data between different devices</string>
 	<key>NSBluetoothPeripheralUsageDescription</key>
 	<string>The app uses bluetooth to find, connect and transfer data between different devices</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>This application requires active access to your device GPS radio components to compute precision location coordinates.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>This application requires active access to your device GPS radio components to calculate live tracking coordinate telemetry metrics.</string>
 </dict>
 </plist>
